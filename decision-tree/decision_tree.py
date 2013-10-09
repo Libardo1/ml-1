@@ -29,6 +29,15 @@ class DecisionTree:
         for val in possible_values:
             subset_data = [instance for instance in data if instance[attribute] == val]
             subset_val = float(len(subset_data) / len(data)) * self.entropy(subset_data, target_attribute)
-            gain = gain - subset_val
+            gain -= subset_val
         return gain
 
+    def find_best_attribute(self, data, attributes, target_attribute):
+        max_gain = 0
+        best_attribute = attributes[0]
+        for attribute in attributes:
+            gain = self.gain(data, attribute, target_attribute)
+            if gain > max_gain:
+                best_attribute = attribute
+                max_gain = gain
+        return best_attribute

@@ -21,3 +21,10 @@ class TestDecisionTree(unittest.TestCase):
         gain = self.tree.gain(self.data, "male", "married")
         is_within = gain > 0.321 and gain < 0.322
         is_within.should.be.ok
+
+    def test_find_best_attribute(self):
+        attributes = list(self.data[0].keys())
+        attributes.pop(len(attributes) - 1)
+        best_attribute = self.tree.find_best_attribute(self.data,
+                attributes, "married")
+        best_attribute.should.eql("tall")
