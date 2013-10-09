@@ -1,0 +1,34 @@
+This package contains 3 files:
+
+-train.data: training set
+
+-validation.data: validation set
+
+-README: this file
+
+
+**********DATA DESCRIPTION**********
+
+1. Number of Attributes: 16 (all binary-valued + missing values "?")
+
+2. Attribute Information: 
+
+
+  1. *Class Name*: 2 (democrat, republican)
+   2. handicapped-infants: 3 (y,n,?)
+   3. water-project-cost-sharing: 3 (y,n,?)
+   4. adoption-of-the-budget-resolution: 3 (y,n,?)
+   5. physician-fee-freeze: 3 (y,n,?)
+   6. el-salvador-aid: 3 (y,n,?)
+   7. religious-groups-in-schools: 3 (y,n,?)
+   8. anti-satellite-test-ban: 3 (y,n,?)
+   9. aid-to-nicaraguan-contras: 3 (y,n,?)
+  10. mx-missile: 3 (y,n,?)
+  11. immigration: 3 (y,n,?)
+  12. synfuels-corporation-cutback: 3 (y,n,?)
+  13. education-spending: 3 (y,n,?)
+  14. superfund-right-to-sue: 3 (y,n,?)
+  15. crime: 3 (y,n,?)
+  16. duty-free-exports: 3 (y,n,?)
+  17. export-administration-act-south-africa: 3 (y,n,?)
+
