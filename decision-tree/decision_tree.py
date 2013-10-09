@@ -1,5 +1,14 @@
 import math
 
+class Node:
+    
+    def __init__(self, label):
+        self.label = label
+        self.children = {}
+
+    def is_leaf(self):
+        return not self.children
+
 class DecisionTree:
 
     def entropy(self, data, target_attribute):
@@ -41,3 +50,23 @@ class DecisionTree:
                 best_attribute = attribute
                 max_gain = gain
         return best_attribute
+
+    def find_data(self, data, attribute, attribute_value):
+        return [instance for instance in data if instance[attribute] ==
+                attribute_value]
+
+    def grow(self, data, attributes, target_attribute):
+        if not data or not attributes:
+            return Node("")
+        best_attribute = self.find_best_attribute(data, attributes,
+                target_attribute)
+        new_attributes = attributes[:]
+        new_attributes.remove(best_attribute)
+        node = Node(best_attribute)
+        possible_values = [True, False]
+        for val in possible_values:
+            sub_data = self.find_data(data, best_attribute, val)
+            node.children[val] = self.grow(sub_data, new_attributes,
+                    target_attribute)
+        return node
+

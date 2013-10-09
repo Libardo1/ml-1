@@ -24,7 +24,13 @@ class TestDecisionTree(unittest.TestCase):
 
     def test_find_best_attribute(self):
         attributes = list(self.data[0].keys())
-        attributes.pop(len(attributes) - 1)
+        attributes.remove("married")
         best_attribute = self.tree.find_best_attribute(self.data,
                 attributes, "married")
         best_attribute.should.eql("tall")
+
+    def test_grow_decision_tree(self):
+        attributes = list(self.data[0].keys())
+        attributes.remove("married")
+        root_node = self.tree.grow(self.data, attributes, "married")
+        root_node.label.should.eql("tall")
