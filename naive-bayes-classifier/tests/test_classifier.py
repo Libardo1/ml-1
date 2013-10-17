@@ -19,3 +19,24 @@ class TestClassifier(unittest.TestCase):
 
     def test_subset_of_documents_with_target_value(self):
         len(self.classifier.get_documents_with_target_value('university')).should.eql(1)
+
+    def test_text_of_documents(self):
+        documents = self.classifier.get_documents_with_target_value('university')
+        self.classifier.get_text(documents).should.contain('private')
+
+    def test_text_distinct_words(self):
+        documents = self.classifier.get_documents_with_target_value('university')
+        text = self.classifier.get_text(documents)
+        self.classifier.get_text_diff_words_count(text).should.eql(28)
+
+    def test_example_count(self):
+        self.classifier.get_example_count().should.eql(1)
+
+    def test_occurrences_of_word_count(self):
+        documents = self.classifier.get_documents_with_target_value('university')
+        text = self.classifier.get_text(documents)
+        self.classifier.occurrences_count(',', text).should.eql(7)
+
+    def test_learn(self):
+        self.classifier.learn()
+
