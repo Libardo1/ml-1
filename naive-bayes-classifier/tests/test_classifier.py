@@ -40,3 +40,11 @@ class TestClassifier(unittest.TestCase):
     def test_learn(self):
         self.classifier.learn()
 
+    def test_word_positions_in_doc(self):
+        documents = self.classifier.get_documents_with_target_value('university')
+        len(self.classifier.word_positions(documents[0])).should.eql(38)
+
+    def test_classify(self):
+        self.classifier.learn()
+        self.classifier.classify(self.examples['university'][0]).should.eql('university')
+
