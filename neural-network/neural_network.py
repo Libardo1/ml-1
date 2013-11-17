@@ -14,9 +14,11 @@ class NeuralNetwork:
 
         self._layer_input = []
         self._layer_output = []
+        self._previous_weight_delta = []
 
         for (l1, l2) in zip(layer_size[:-1], layer_size[1:]):
             self.weights.append(np.random.normal(scale=0.1, size = (l2, l1+1)))
+            self._previous_weight_delta.append(np.zeros((l2, l1+1)))
 
     def run(self, input):
         in_cases = input.shape[0]
@@ -43,7 +45,7 @@ class NeuralNetwork:
             out = self.sigmoid(x)
             return out * (1 - out)
 
-    def train_epoch(self, input, target, training_rate = 0.2):
+    def train_epoch(self, input, target, training_rate = 0.2, momentum = 0.5):
 
         delta = []
         ln_cases = input.shape[0]
@@ -60,10 +62,12 @@ class NeuralNetwork:
                 delta_pullback = self.weights[index + 1].T.dot(delta[-1])
                 delta.append(delta_pullback[:-1, :] * self.sigmoid(self._layer_input[index], True)) 
 
-        self.compute_weight_deltas(delta, input, ln_cases, training_rate)
+        self.compute_weight_deltas(delta, input, ln_cases, training_rate,
+                momentum)
         return error
 
-    def compute_weight_deltas(self, delta, input, ln_cases, training_rate):
+    def compute_weight_deltas(self, delta, input, ln_cases, training_rate,
+            momentum):
         for index in range(self.layer_count):
             delta_index = self.layer_count - 1 - index
 
@@ -71,8 +75,11 @@ class NeuralNetwork:
                 layer_output = np.vstack([input.T, np.ones([1, ln_cases])])
             else:
                 layer_output = np.vstack([self._layer_output[index - 1], np.ones([1, self._layer_output[index - 1].shape[1]])])
-            weight_delta = np.sum(layer_output[None,:,:].transpose(2, 0, 1) * delta[delta_index][None, :, :].transpose(2, 1, 0), axis = 0)
-            self.weights[index] -= training_rate * weight_delta
+            current_weight_delta = np.sum(layer_output[None,:,:].transpose(2, 0, 1) * delta[delta_index][None, :, :].transpose(2, 1, 0), axis = 0)
+            weight_delta = training_rate * current_weight_delta + momentum * self._previous_weight_delta[index]
+            self.weights[index] -= weight_delta
+
+            self._previous_weight_delta[index] = weight_delta
 
 if __name__ == "__main__":
     network = NeuralNetwork((2, 2, 1))
